@@ -26,7 +26,13 @@ const SPREADSHEET_SOURCES = [
     kode: "u46b647uy6bn4",
     label: "PM",
     url: "https://docs.google.com/spreadsheets/d/1147-w0dWCnVqdB2ZbMqQJ2Yc-79w73w8tjZwK9gwPBM/export?format=csv&gid=0"
-  }
+  },
+  {
+    id: "sp5",
+    kode: "private",
+    label: "Private",
+    url: "https://docs.google.com/spreadsheets/d/1KEMEpgn94Ma8O8cFgF5vfjXdIJftZ98KfKetAeo5so0/export?format=csv&gid=0"
+  },
 ];
 
 let db = {};
