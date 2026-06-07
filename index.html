@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Xshi Kotoba</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="apple-touch-icon" href="icon.png" />
+</head>
+
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <h1>Xshi Kotoba</h1>
+        <div class="subtitle">Test app ver1</div>
+      </div>
+
+      <div style="display:flex; gap:8px; align-items:flex-end; flex-direction:column;">
+      </div>
+    </div>
+
+   <section id="welcomePage" class="welcome">
+  <div class="card center">
+    <div class="welcome-title-row">
+      <div class="title-big">頑張ってね (˶˃ ᵕ ˂˶) .ᐟ.ᐟ</div>
+
+      <button type="button" class="welcome-gear-btn" onclick="openKelola()" title="Kelola Kotoba">
+        ⚙
+      </button>
+    </div>
+
+    <p class="subtitle">Pilih list kotoba mana yang mau dilatih.</p>
+    <p class="subtitle">Lek rakenek WA o aku</p>
+
+    <div style="margin:16px 0; text-align:left">
+      <label for="babSelect">Pilih List Kotoba</label>
+      <select id="babSelect"></select>
+    </div>
+
+    <div class="mobile-actions">
+      <!-- <button type="button" onclick="startLatihan()">Mulai Latihan</button> -->
+
+      <button type="button" class="secondary" onclick="startLatihan2()">
+        Jp-Indo
+      </button>
+
+      <button type="button" class="secondary" onclick="startLatihan3()">
+        Indo-JP
+      </button>
+
+      <!-- Kelola Kotoba dipindah ke icon gear -->
+      <!--
+      <button type="button" class="secondary" onclick="openKelola()">
+        Kelola Kotoba
+      </button>
+      -->
+    </div>
+
+    <hr style="border-color:rgba(255,255,255,.08); margin:18px 0" />
+
+    <div class="row" style="margin-top:12px; flex-wrap:wrap">
+      <!--
+      <button type="button" class="secondary" onclick="saveJsonFile()">Simpan Progres</button>
+      <button type="button" class="secondary" onclick="triggerImportJson()">Ambil Progres</button>
+      -->
+      <input type="file" id="jsonInput" accept=".json,application/json" hidden />
+    </div>
+  </div>
+</section>
+
+    <section id="latihanPage" class="hidden">
+      <div class="card latihan-card">
+        <div class="latihan-row">
+          <div>
+            <b id="activeBabText">List kotoba yang akan ditampilkan</b>
+          </div>
+        </div>
+
+        <div class="latihan-action-row">
+          <button
+            type="button"
+            class="secondary"
+            id="toggleKanaBtn"
+            onclick="toggleKana()">
+            Hiragana OFF
+          </button>
+
+          <button type="button" class="secondary" onclick="goWelcome()">
+            Kembali
+          </button>
+        </div>
+
+        <div class="latihan-action-row">
+          <button type="button" class="warn latihan-full-button" onclick="penak()">
+            Wes Apal Iki, SKIPPP
+          </button>
+
+          <button type="button" id="cekJawabanBtn" onclick="handleCekJawaban()">
+            Cek Jawaban
+          </button>
+        </div>
+
+        <div class="kanji-box" id="kanjiBox">
+          <div class="kana kana-inside" id="kanaBox"></div>
+          <div class="kanji-text" id="kanjiText">Kanji</div>
+          <div id="answerHint" class="answer-hint"></div>
+        </div>
+
+        <div class="latihan-input-group">
+          <label for="romajiInput">Romaji</label>
+          <input
+            id="romajiInput"
+            type="search"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="none"
+            spellcheck="false"
+            inputmode="latin"
+          />
+        </div>
+
+        <div class="latihan-input-group">
+          <label for="artiInput">Arti</label>
+          <input
+            id="artiInput"
+            type="search"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="none"
+            spellcheck="false"
+          />
+        </div>
+      </div>
+    </section>
+<section id="latihan2Page" class="hidden">
+  <div class="card latihan-card">
+    <div class="latihan-row">
+      <div>
+        <b id="latihan2BabText">Test Latihan 2</b>
+      </div>
+    </div>
+
+    <div class="latihan-action-row">
+      <button
+        type="button"
+        class="secondary"
+        id="toggleKana2Btn"
+        onclick="toggleKana2()">
+        Hiragana OFF
+      </button>
+
+      <button type="button" class="secondary" onclick="goWelcome()">
+       Kembali
+      </button>
+    </div>
+
+    <button type="button" class="warn latihan-full-button" onclick="penakLatihan2()">
+      Wes Apal Iki, SKIPPP
+    </button>
+
+  <div class="kanji-box">
+  <div class="latihan2-kana-row">
+    <div class="latihan2-stat-pill">
+      Hafal: <b id="latihan2HafalCount">0</b>
+    </div>
+
+    <div class="kana kana-inside" id="latihan2KanaBox"></div>
+
+    <div class="latihan2-stat-pill">
+      Lali: <b id="latihan2LaliCount">0</b>
+    </div>
+  </div>
+
+  <div class="kanji-text" id="latihan2KanjiText">Kanji</div>
+  <div id="latihan2Result" class="answer-hint"></div>
+</div>
+
+    <div id="latihan2Choices" class="choice-grid"></div>
+  </div>
+</section>
+
+<section id="latihan3Page" class="hidden">
+  <div class="card latihan-card">
+    <div class="latihan-row">
+      <div>
+        <b id="latihan3BabText">Test Latihan 3</b>
+      </div>
+    </div>
+
+     <div class="latihan-action-row">
+  <button
+    type="button"
+    class="secondary"
+    id="toggleKana3Btn"
+    onclick="toggleKana3()">
+    Hiragana ON
+  </button>
+
+  <button type="button" class="secondary" onclick="goWelcome()">
+    Kembali
+  </button>
+</div>
+
+<button type="button" class="warn latihan-full-button" onclick="penakLatihan3()">
+  Wes Apal Iki, SKIPPP
+</button>
+
+    <div class="kanji-box">
+      <div class="latihan2-kana-row">
+        <div class="latihan2-stat-pill">
+          Hafal: <b id="latihan3HafalCount">0</b>
+        </div>
+        <div class="latihan2-stat-pill">
+          Lali: <b id="latihan3LaliCount">0</b>
+        </div>
+      </div>
+
+      <div class="kanji-text" id="latihan3ArtiText">Arti</div>
+      <div id="latihan3Result" class="answer-hint"></div>
+    </div>
+
+    <div id="latihan3Choices" class="choice-grid"></div>
+  </div>
+</section>
+
+    <section id="kelolaPage" class="hidden">
+      <div class="card">
+        <div class="row" style="justify-content:space-between">
+          <div>
+            <h2 style="margin:0; color:var(--line)">Kelola Kotoba</h2>
+            <div class="small">Klik "Ambil kotoba" dulu, lalu klik "Yakin..."</div>
+          </div>
+
+          <button type="button" class="secondary" onclick="goWelcome()">Kembali</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <label for="babKelolaSelect">Pilih List Kotoba</label>
+          <select id="babKelolaSelect"></select>
+        </div>
+
+        <div class="stats">
+          <div class="stat">Jumlah Kotoba: <b id="statTotal">0</b></div>
+          <div class="stat">Hafal: <b id="statHafal">0</b></div>
+          <div class="stat">Lali: <b id="statLali">0</b></div>
+        </div>
+
+        <div class="row" style="margin-bottom:10px; flex-wrap:wrap">
+          <!-- <button type="button" onclick="saveLocal({ goWelcomeAfterSave: true })">
+            GASSSSSSSS
+          </button> -->
+
+<button type="button" class="secondary" onclick="openKodeImportModal()">
+  Ambil Kotoba
+</button>
+          <!-- <button type="button" class="secondary" onclick="hideAll(true)">
+            Centang Kabeh
+          </button> -->
+
+          <button type="button" class="secondary" onclick="hideAll(false)">
+            Reset
+          </button>
+        </div>
+
+        <div id="previewInfo" class="small hidden" style="margin-bottom:10px;"></div>
+
+        <div class="table-wrap">
+          <table id="dataTable">
+            <thead>
+              <tr>
+                <th onclick="sortHideFirst()" style="cursor:pointer">Hafal</th>
+                <th>Kanji</th>
+                <th>Kana</th>
+                <th>Romaji</th>
+                <th>Arti</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="sheetPickerModal" class="modal hidden">
+    <div class="modal-backdrop" onclick="closeSheetPicker()"></div>
+
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 id="sheetPickerTitle">Pilih List Kotoba</h3>
+          <p id="sheetPickerDesc" class="small">Pilih sumber data yang ingin digunakan.</p>
+        </div>
+
+        <button type="button" class="modal-close" onclick="closeSheetPicker()">✕</button>
+      </div>
+
+      <div id="sheetPickerList" class="sheet-picker-list"></div>
+
+      <div class="modal-footer">
+        <button type="button" class="secondary" onclick="closeSheetPicker()">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmImportModal" class="modal hidden">
+    <div class="modal-backdrop" onclick="closeConfirmImport()"></div>
+
+    <div class="modal-card modal-card-sm">
+      <div class="modal-header">
+        <div>
+          <h3>Konfirmasi Ambil Spreadsheet</h3>
+          <p class="small">Data akan ditimpa.</p>
+        </div>
+
+        <button type="button" class="modal-close" onclick="closeConfirmImport()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p id="confirmImportText" style="margin:0;"></p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="secondary" onclick="closeConfirmImport()">Batal</button>
+        <button type="button" onclick="confirmImportSelected()">Ambil</button>
+      </div>
+    </div>
+  </div>
+<div id="kodeImportModal" class="modal hidden">
+  <div class="modal-backdrop" onclick="closeKodeImportModal()"></div>
+
+  <div class="modal-card modal-card-sm">
+    <div class="modal-header">
+      <div>
+        <h3>Masukkan Kode</h3>
+        <p class="small">Masukkan kode list kotoba untuk mengambil data.</p>
+      </div>
+      <button type="button" class="modal-close" onclick="closeKodeImportModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <label for="kodeImportInput">Kode</label>
+      <input
+        id="kodeImportInput"
+        type="text"
+        autocomplete="off"
+        placeholder="Masukkan kode"
+        style="width:100%; margin-top:8px;"
+      />
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="secondary" onclick="closeKodeImportModal()">Batal</button>
+      <button type="button" onclick="confirmKodeImport()">Lanjut</button>
+    </div>
+  </div>
+</div>
+  <script src="script.js"></script>
+  <script src="latihan2.js"></script>
+  <script src="latihan3.js"></script>
+</body>
+</html>
+
