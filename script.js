@@ -302,15 +302,15 @@ async function doImportFromSpreadsheet(source) {
 
     const importedDb = await fetchSpreadsheetDb(source);
 
-db = importedDb;
-originalLocalDb = JSON.parse(JSON.stringify(db));
-activeBab = Object.keys(db)[0] || "";
-previewMode = false;
-previewDb = {};
-previewSourceLabel = "";
-localBabBeforePreview = "";
-queue = [];
-activeSessionPool = [];
+    db = importedDb;
+    originalLocalDb = JSON.parse(JSON.stringify(db));
+    activeBab = Object.keys(db)[0] || "";
+    previewMode = false;
+    previewDb = {};
+    previewSourceLabel = "";
+    localBabBeforePreview = "";
+    queue = [];
+    activeSessionPool = [];
 
     ensureDbValid();
     refreshBabSelects();
@@ -324,6 +324,7 @@ activeSessionPool = [];
   } catch (err) {
     console.error(err);
     showStatus(`Gagal ambil ${source.label}`, "warn");
+    throw err;
   }
 }
 
@@ -1155,7 +1156,26 @@ async function confirmImportSelected() {
   if (!source) return;
 
   closeConfirmImport();
-  await doImportFromSpreadsheet(source);
+
+  showImportLoading(`Mengambil data dari ${source.label}...`);
+
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 150));
+
+    const startTime = Date.now();
+
+    await doImportFromSpreadsheet(source);
+
+    const elapsed = Date.now() - startTime;
+    if (elapsed < 700) {
+      await new Promise((resolve) => setTimeout(resolve, 700 - elapsed));
+    }
+  } catch (err) {
+    console.error(err);
+    showStatus("Gagal ambil data", "warn");
+  } finally {
+    hideImportLoading();
+  }
 }
 
 /* =========================
@@ -1370,6 +1390,8 @@ function openKodeImportModal() {
   modal.classList.remove("hidden");
   document.body.classList.add("modal-open");
 
+  hideImportLoading();
+
   setTimeout(() => {
     input.focus();
   }, 50);
@@ -1385,9 +1407,25 @@ function closeKodeImportModal() {
   document.body.classList.remove("modal-open");
 }
 
+function showImportLoading() {
+  const popup = $("loadingImportPopup");
+  if (!popup) {
+    alert("loadingImportPopup tidak ditemukan");
+    return;
+  }
+
+  popup.classList.remove("hidden");
+}
+
+function hideImportLoading() {
+  const popup = $("loadingImportPopup");
+  if (!popup) return;
+
+  popup.classList.add("hidden");
+}
+
 function confirmKodeImport() {
   const input = $("kodeImportInput");
-
   const kode = cleanKode(input?.value || "");
 
   if (!kode) {
@@ -1411,6 +1449,73 @@ function confirmKodeImport() {
 function importFromSpreadsheet() {
   openKodeImportModal();
 }
+
+
+function showImportLoading(message) {
+  const popup = $("loadingImportPopup");
+  const text = $("loadingImportText");
+
+  if (text) {
+    text.textContent = message || "Mohon tunggu sebentar";
+  }
+
+  if (popup) {
+    popup.style.display = "flex";
+  }
+}
+
+function hideImportLoading() {
+  const popup = $("loadingImportPopup");
+
+  if (popup) {
+    popup.style.display = "none";
+  }
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function confirmKodeImport() {
+  const input = $("kodeImportInput");
+  const kode = cleanKode(input?.value || "");
+
+  if (!kode) {
+    showStatus("Kode belum diisi", "warn");
+    return;
+  }
+
+  const source = SPREADSHEET_SOURCES.find((item) => {
+    return cleanKode(item.kode) === kode;
+  });
+
+  if (!source) {
+    showStatus("Kode tidak ditemukan", "warn");
+    return;
+  }
+
+  closeKodeImportModal();
+  showImportLoading(`Mengambil data dari ${source.label}...`);
+
+  await sleep(150);
+
+  try {
+    const startTime = Date.now();
+
+    await doImportFromSpreadsheet(source);
+
+    const elapsed = Date.now() - startTime;
+    if (elapsed < 700) {
+      await sleep(700 - elapsed);
+    }
+  } catch (err) {
+    console.error(err);
+    showStatus("Gagal ambil data", "warn");
+  } finally {
+    hideImportLoading();
+  }
+}
+
 
 /* =========================
    Expose globals
@@ -1454,3 +1559,6 @@ window.openKodeImportModal = openKodeImportModal;
 window.closeKodeImportModal = closeKodeImportModal;
 window.confirmKodeImport = confirmKodeImport;
 window.importFromSpreadsheet = importFromSpreadsheet;
+
+window.showImportLoading = showImportLoading;
+window.hideImportLoading = hideImportLoading;

@@ -15,8 +15,8 @@
   <div class="app">
     <div class="topbar">
       <div class="brand">
-        <h1>Xshi Kotoba</h1>
-        <div class="subtitle">Test app ver1</div>
+        <h1>Xshi Kotoba II</h1>
+        <!-- <div class="subtitle">Test app ver1</div> -->
       </div>
 
       <div style="display:flex; gap:8px; align-items:flex-end; flex-direction:column;">
@@ -26,7 +26,7 @@
    <section id="welcomePage" class="welcome">
   <div class="card center">
     <div class="welcome-title-row">
-      <div class="title-big">頑張ってね (˶˃ ᵕ ˂˶) .ᐟ.ᐟ</div>
+      <div class="title-big">頑張って (˶˃ ᵕ ˂˶).ᐟ</div>
 
       <button type="button" class="welcome-gear-btn" onclick="openKelola()" title="Kelola Kotoba">
         ⚙
@@ -232,7 +232,7 @@
         <div class="row" style="justify-content:space-between">
           <div>
             <h2 style="margin:0; color:var(--line)">Kelola Kotoba</h2>
-            <div class="small">Klik "Ambil kotoba" dulu, lalu klik "Yakin..."</div>
+            <!-- <div class="small">Klik "Ambil kotoba" dulu, lalu klik "Yakin..."</div> -->
           </div>
 
           <button type="button" class="secondary" onclick="goWelcome()">Kembali</button>
@@ -358,10 +358,22 @@
       <button type="button" onclick="confirmKodeImport()">Lanjut</button>
     </div>
   </div>
+
+<div id="loadingImportPopup" class="loading-import-popup">
+  <div class="loading-import-card">
+    <div class="loading-spinner"></div>
+
+    <div>
+      <div class="loading-title">Mengambil data...</div>
+      <div class="loading-subtitle" id="loadingImportText">
+        Mohon tunggu sebentar
+      </div>
+    </div>
+  </div>
 </div>
-  <script src="script.js"></script>
-  <script src="latihan2.js"></script>
-  <script src="latihan3.js"></script>
+<script src="script.js"></script>
+<script src="latihan2.js"></script>
+<script src="latihan3.js"></script>
 </body>
 </html>
 

@@ -125,6 +125,20 @@ function formatLatihan3Choice(item) {
   return kanji;
 }
 
+function formatLatihan3ChoiceHtml(item) {
+  const kanji = item.kanji || "-";
+  const kana = item.kana || "-";
+
+  if (kana3Pinned) {
+    return `
+      <span class="choice-kanji">${escapeHtml(kanji)}</span>
+      <span class="choice-kana">${escapeHtml(kana)}</span>
+    `;
+  }
+
+  return `<span class="choice-kanji">${escapeHtml(kanji)}</span>`;
+}
+
 function prepareLatihan3Choices(list, correctItem) {
   const correctText = formatLatihan3Choice(correctItem);
 
@@ -150,14 +164,14 @@ function renderLatihan3ChoicesFromCurrent() {
     .map((item, index) => {
       const text = formatLatihan3Choice(item);
 
-      return `
-        <button
-          type="button"
-          class="choice-btn"
-          onclick="checkLatihan3AnswerByIndex(${index})">
-          ${escapeHtml(text)}
-        </button>
-      `;
+return `
+  <button
+    type="button"
+    class="choice-btn"
+    onclick="checkLatihan3AnswerByIndex(${index})">
+    ${formatLatihan3ChoiceHtml(item)}
+  </button>
+`;
     })
     .join("");
 }

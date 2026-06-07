@@ -1008,3 +1008,320 @@ body.modal-open{overflow:hidden}
     right: 0 !important;
   }
 }
+
+.loading-import-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+}
+
+.loading-import-card {
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  border-radius: 16px;
+  background: #101827;
+  color: #ffffff;
+  border: 1.5px solid #3bd4ff;
+  box-shadow: 0 0 25px rgba(59, 212, 255, 0.25);
+}
+
+.loading-import-card {
+  width: min(320px, calc(100vw - 40px));
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: rgba(12, 20, 36, 0.96);
+  border: 1.5px solid rgba(59, 212, 255, 0.65);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38),
+              0 0 24px rgba(59, 212, 255, 0.16);
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 3px solid rgba(59, 212, 255, 0.25);
+  border-top-color: #3bd4ff;
+  animation: loadingSpin 0.8s linear infinite;
+  flex: 0 0 auto;
+}
+
+.loading-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.loading-subtitle {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+@keyframes loadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   SOFT STROKE - LATIHAN 2 & 3
+   ========================= */
+
+#latihan2Page .latihan-card,
+#latihan3Page .latihan-card {
+  border-color: rgba(59, 212, 255, 0.38) !important;
+  box-shadow: 0 0 18px rgba(59, 212, 255, 0.08) !important;
+}
+
+#latihan2Page .kanji-box,
+#latihan3Page .kanji-box {
+  border-color: rgba(59, 212, 255, 0.36) !important;
+  box-shadow: inset 0 0 18px rgba(59, 212, 255, 0.04),
+              0 0 16px rgba(59, 212, 255, 0.06) !important;
+}
+
+#latihan2Page .latihan-action-row button,
+#latihan3Page .latihan-action-row button {
+  border-color: rgba(59, 212, 255, 0.42) !important;
+  box-shadow: 0 0 10px rgba(59, 212, 255, 0.06) !important;
+}
+
+#latihan2Page .choice-btn,
+#latihan3Page .choice-btn {
+  border: 1px solid rgba(59, 212, 255, 0.48) !important;
+  box-shadow: 0 0 8px rgba(59, 212, 255, 0.05) !important;
+  background: rgba(8, 17, 35, 0.28) !important;
+}
+
+#latihan2Page .choice-btn:hover,
+#latihan3Page .choice-btn:hover {
+  border-color: rgba(59, 212, 255, 0.75) !important;
+  background: rgba(59, 212, 255, 0.06) !important;
+  box-shadow: 0 0 12px rgba(59, 212, 255, 0.12) !important;
+}
+
+#latihan2Page .latihan2-stat-pill,
+#latihan3Page .latihan2-stat-pill {
+  border-color: rgba(59, 212, 255, 0.45) !important;
+  background: rgba(59, 212, 255, 0.035) !important;
+  box-shadow: 0 0 8px rgba(59, 212, 255, 0.06) !important;
+}
+
+#latihan2Page .choice-btn.choice-correct,
+#latihan3Page .choice-btn.choice-correct {
+  border-color: rgba(34, 197, 94, 0.68) !important;
+  background: rgba(34, 197, 94, 0.08) !important;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.12) !important;
+}
+
+#latihan2Page .choice-btn.choice-wrong,
+#latihan3Page .choice-btn.choice-wrong {
+  border-color: rgba(255, 85, 119, 0.68) !important;
+  background: rgba(255, 85, 119, 0.08) !important;
+  box-shadow: 0 0 12px rgba(255, 85, 119, 0.12) !important;
+}
+
+
+
+/* =========================
+   SOFT FONT - LATIHAN 2 & 3
+   ========================= */
+
+#latihan2Page,
+#latihan3Page {
+  font-weight: 400 !important;
+}
+
+#latihan2Page .latihan-row b,
+#latihan3Page .latihan-row b {
+  font-weight: 500 !important;
+}
+
+#latihan2Page .latihan-action-row button,
+#latihan3Page .latihan-action-row button,
+#latihan2Page .warn,
+#latihan3Page .warn {
+  font-weight: 500 !important;
+}
+
+#latihan2Page .choice-btn,
+#latihan3Page .choice-btn {
+  font-weight: 400 !important;
+}
+
+#latihan2Page .latihan2-stat-pill,
+#latihan3Page .latihan2-stat-pill {
+  font-weight: 400 !important;
+}
+
+#latihan2Page .latihan2-stat-pill b,
+#latihan3Page .latihan2-stat-pill b {
+  font-weight: 500 !important;
+}
+
+#latihan2Page #latihan2KanjiText,
+#latihan3Page #latihan3ArtiText {
+  font-weight: 500 !important;
+}
+
+#latihan2Page #latihan2KanaBox,
+#latihan3Page #latihan3ModeText {
+  font-weight: 400 !important;
+}
+
+/* Matikan stroke terluar Latihan 2 & 3 */
+#latihan2Page .latihan-card,
+#latihan3Page .latihan-card {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#latihan2Page .kanji-box,
+#latihan3Page .kanji-box {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* =========================
+   REMOVE ALL STROKE - LATIHAN 2 & 3
+   ========================= */
+
+#latihan2Page .latihan-card,
+#latihan3Page .latihan-card,
+#latihan2Page .kanji-box,
+#latihan3Page .kanji-box,
+#latihan2Page .choice-btn,
+#latihan3Page .choice-btn,
+#latihan2Page .latihan2-stat-pill,
+#latihan3Page .latihan2-stat-pill,
+#latihan2Page .latihan-action-row button,
+#latihan3Page .latihan-action-row button,
+#latihan2Page .warn,
+#latihan3Page .warn {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+#latihan2Page .choice-btn.choice-correct,
+#latihan3Page .choice-btn.choice-correct {
+  background: rgba(34, 197, 94, 0.18) !important;
+  color: #8dffad !important;
+}
+
+#latihan2Page .choice-btn.choice-wrong,
+#latihan3Page .choice-btn.choice-wrong {
+  background: rgba(255, 85, 119, 0.18) !important;
+  color: #ff8fa3 !important;
+}
+#latihan2Page .choice-btn,
+#latihan3Page .choice-btn {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+#latihan2Page .choice-btn:hover,
+#latihan3Page .choice-btn:hover {
+  background: rgba(59, 212, 255, 0.08) !important;
+}
+/* Latihan 3: paksa pilihan jawaban 2 kolom x 3 baris */
+#latihan3Page .choice-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-auto-rows: minmax(44px, auto) !important;
+  gap: 10px !important;
+}
+
+#latihan3Page .choice-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+/* Latihan 2 & 3: 2 kolom, teks boleh turun, tinggi baris sama, rata tengah */
+#latihan2Page .choice-grid,
+#latihan3Page .choice-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  align-items: stretch !important;
+}
+
+#latihan2Page .choice-btn,
+#latihan3Page .choice-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  height: 100% !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  text-align: center !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+
+  line-height: 1.35 !important;
+  padding: 10px 8px !important;
+}
+/* Pilihan jawaban Latihan 2 & 3 rata kiri */
+#latihan2Page .choice-btn,
+#latihan3Page .choice-btn {
+  text-align: left !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+    padding-left: 24px !important;
+  padding-right: 10px !important;
+  padding-top: 10px !important;
+    padding-bottom: 10px !important;
+
+}
+
+/* Khusus Latihan 3: Kanji dan hiragana dibuat atas-bawah */
+#latihan3Page .choice-btn {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 2px !important;
+}
+
+#latihan3Page .choice-kanji {
+  display: block !important;
+  width: 100% !important;
+  font-size: 14px !important;
+  line-height: 1.25 !important;
+  text-align: left !important;
+}
+
+#latihan3Page .choice-kana {
+  display: block !important;
+  width: 100% !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+  opacity: 0.72 !important;
+  text-align: left !important;
+}
+/* Hafal / Lali Latihan 2 & 3 rata atas */
+#latihan2Page .latihan2-kana-row,
+#latihan3Page .latihan2-kana-row {
+  align-items: flex-start !important;
+}
+
+#latihan2Page .latihan2-stat-pill,
+#latihan3Page .latihan2-stat-pill {
+  align-self: flex-start !important;
+  margin-top: 0 !important;
+}
