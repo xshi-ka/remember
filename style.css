@@ -1325,3 +1325,30 @@ body.modal-open{overflow:hidden}
   align-self: flex-start !important;
   margin-top: 0 !important;
 }
+
+/* Status JP-Indo / Indo-JP di Kelola Kotoba */
+.status-latihan-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 88px;
+}
+
+.status-latihan-box label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.status-latihan-box input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+.hide-status-latihan-cell {
+  display: none !important;
+}

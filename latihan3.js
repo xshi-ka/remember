@@ -32,7 +32,7 @@ function startLatihan3() {
 
 function getLatihan3Items() {
   return (db[activeBab] || []).filter((x) => {
-    return !x.hide && x.kanji && x.kana && x.arti;
+    return !x.hide3 && x.kanji && x.kana && x.arti;
   });
 }
 
@@ -64,7 +64,8 @@ function refillLatihan3Pool() {
 function updateLatihan3Stats() {
   const arr = db[activeBab] || [];
   const data = arr.filter((x) => x.kanji || x.kana || x.romaji || x.arti);
-  const hafal = data.filter((x) => x.hide).length;
+
+  const hafal = data.filter((x) => x.hide3).length;
   const lali = data.length - hafal;
 
   const hafalEl = $("latihan3HafalCount");
@@ -225,7 +226,7 @@ function penakLatihan3() {
   const item = arr.find((x) => getLatihan3Key(x) === getLatihan3Key(currentLatihan3));
 
   if (item) {
-    item.hide = true;
+    item.hide3 = true;
   }
 
   const currentKey = getLatihan3Key(currentLatihan3);
@@ -233,9 +234,10 @@ function penakLatihan3() {
   latihan3Pool = latihan3Pool.filter((x) => getLatihan3Key(x) !== currentKey);
   latihan3Queue = latihan3Queue.filter((x) => getLatihan3Key(x) !== currentKey);
 
-  saveLocal({ skipRender: true });
-  updateLatihan3Stats();
-  nextLatihan3Question();
+saveLocal({ skipRender: true });
+updateLatihan3Stats();
+updateStats();
+nextLatihan3Question();
 }
 
 function updateKana3ToggleButton() {

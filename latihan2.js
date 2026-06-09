@@ -31,7 +31,7 @@ function startLatihan2() {
 
 function getLatihan2Items() {
   return (db[activeBab] || []).filter((x) => {
-    return !x.hide && x.kanji && x.arti;
+    return !x.hide2 && x.kanji && x.arti;
   });
 }
 
@@ -185,33 +185,27 @@ function penakLatihan2() {
   if (!currentLatihan2) return;
 
   const arr = db[activeBab] || [];
-  const item = arr.find(
-    (x) =>
-      x.kanji === currentLatihan2.kanji &&
-      x.kana === currentLatihan2.kana &&
-      x.romaji === currentLatihan2.romaji &&
-      x.arti === currentLatihan2.arti
-  );
+  const currentKey = getLatihan2Key(currentLatihan2);
+
+  const item = arr.find((x) => getLatihan2Key(x) === currentKey);
 
   if (item) {
-    item.hide = true;
+    item.hide2 = true;
   }
 
-  const currentKey = `${currentLatihan2.kanji}|${currentLatihan2.kana}|${currentLatihan2.romaji}|${currentLatihan2.arti}`;
+  latihan2Pool = latihan2Pool.filter((x) => getLatihan2Key(x) !== currentKey);
+  latihan2Queue = latihan2Queue.filter((x) => getLatihan2Key(x) !== currentKey);
 
-  latihan2Queue = latihan2Queue.filter(
-    (x) => `${x.kanji}|${x.kana}|${x.romaji}|${x.arti}` !== currentKey
-  );
-
-  saveLocal({ skipRender: true });
-  updateLatihan2Stats();
-  nextLatihan2Question();
+saveLocal({ skipRender: true });
+updateLatihan2Stats();
+updateStats();
+nextLatihan2Question();
 }
-
 function updateLatihan2Stats() {
   const arr = db[activeBab] || [];
   const data = arr.filter((x) => x.kanji || x.kana || x.romaji || x.arti);
-  const hafal = data.filter((x) => x.hide).length;
+
+  const hafal = data.filter((x) => x.hide2).length;
   const lali = data.length - hafal;
 
   const hafalEl = $("latihan2HafalCount");
@@ -241,6 +235,11 @@ function refillLatihan2Pool() {
     latihan2Pool.push(shuffledRemaining.shift());
   }
 }
+function getLatihan2Key(item) {
+  return `${item.kanji}|${item.kana}|${item.romaji}|${item.arti}`;
+}
+
+
 
 
 window.startLatihan2 = startLatihan2;

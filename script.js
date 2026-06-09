@@ -123,6 +123,8 @@ function defaultData() {
 function normalizeItem(item) {
   return {
     hide: !!item?.hide,
+    hide2: !!item?.hide2,
+    hide3: !!item?.hide3,
     kanji: String(item?.kanji ?? "").trim(),
     kana: String(item?.kana ?? "").trim(),
     romaji: String(item?.romaji ?? "").trim(),
@@ -815,7 +817,19 @@ function renderTable() {
       `;
     } else {
       tr.innerHTML = `
-        <td><input type="checkbox" data-field="hide" ${item.hide ? "checked" : ""} /></td>
+        <td>
+  <div class="status-latihan-box">
+    <label>
+      <input type="checkbox" data-field="hide2" ${item.hide2 ? "checked" : ""} />
+      <span>JP→Indo</span>
+    </label>
+
+    <label>
+      <input type="checkbox" data-field="hide3" ${item.hide3 ? "checked" : ""} />
+      <span>Indo→JP</span>
+    </label>
+  </div>
+</td>
         <td><input type="text" data-field="kanji" value="${escapeAttr(item.kanji)}" /></td>
         <td><input type="text" data-field="kana" value="${escapeAttr(item.kana)}" /></td>
         <td><input type="text" data-field="romaji" value="${escapeAttr(item.romaji)}" /></td>
@@ -839,14 +853,16 @@ function renderTable() {
   const field = input.dataset.field;
   if (!field) return;
 
-  item[field] = field === "hide" ? input.checked : input.value;
+  item[field] = ["hide", "hide2", "hide3"].includes(field)
+  ? input.checked
+  : input.value;
   updateStats();
   showStatus("Perubahan belum disimpan", "warn");
 });
 
         input.addEventListener("input", () => {
           const field = input.dataset.field;
-          if (!field || field === "hide") return;
+          if (!field || ["hide", "hide2", "hide3"].includes(field)) return;
 
           item[field] = input.value;
           updateStats();
@@ -867,8 +883,14 @@ function renderTable() {
 function updateStats() {
   const sourceDb = previewMode ? previewDb : db;
   const arr = sourceDb[activeBab] || [];
-  const data = arr.filter((x) => x.kanji || x.kana || x.romaji || x.arti);
-  const hafal = data.filter((x) => x.hide).length;
+
+  const data = arr.filter((x) => {
+    return x.kanji || x.kana || x.romaji || x.arti;
+  });
+
+  // Hafal umum = sudah hafal di Latihan 2 DAN Latihan 3
+  const hafal = data.filter((x) => x.hide2 && x.hide3).length;
+  const lali = data.length - hafal;
 
   const statTotal = $("statTotal");
   const statHafal = $("statHafal");
@@ -876,7 +898,7 @@ function updateStats() {
 
   if (statTotal) statTotal.textContent = data.length;
   if (statHafal) statHafal.textContent = hafal;
-  if (statLali) statLali.textContent = data.length - hafal;
+  if (statLali) statLali.textContent = lali;
 }
 
 function hideAll(value) {
@@ -927,7 +949,6 @@ function pasteFromTextArea() {
     const p = row.split("\t");
     if (p.length >= 4) {
       db[activeBab].push({
-        hide: false,
         kanji: p[0]?.trim() || "",
         kana: p[1]?.trim() || "",
         romaji: p[2]?.trim() || "",
@@ -1047,23 +1068,51 @@ activeSessionPool = [];
 
 function resetLocalData() {
   if (previewMode) return;
-  if (!originalLocalDb || Object.keys(originalLocalDb).length === 0) return;
 
-  db = JSON.parse(JSON.stringify(originalLocalDb));
+  const yakin = confirm("Reset semua status hafalan Latihan 2 dan Latihan 3?");
+  if (!yakin) return;
 
-  if (!db[activeBab]) {
-    activeBab = Object.keys(db)[0] || "";
-  }
+  Object.keys(db).forEach((babName) => {
+    const arr = db[babName] || [];
+
+    arr.forEach((item) => {
+      item.hide = false;
+      item.hide2 = false;
+      item.hide3 = false;
+    });
+  });
 
   queue = [];
-  selectedRows.clear();
+  activeSessionPool = [];
+
+  if (typeof selectedRows !== "undefined" && selectedRows) {
+    selectedRows.clear();
+  }
+
+  if (typeof currentLatihan2 !== "undefined") currentLatihan2 = null;
+  if (typeof latihan2Queue !== "undefined") latihan2Queue = [];
+  if (typeof latihan2Pool !== "undefined") latihan2Pool = [];
+
+  if (typeof currentLatihan3 !== "undefined") currentLatihan3 = null;
+  if (typeof latihan3Queue !== "undefined") latihan3Queue = [];
+  if (typeof latihan3Pool !== "undefined") latihan3Pool = [];
+
+  saveLocal({ skipRender: true });
 
   refreshBabSelects();
   renderTable();
   updateStats();
-  showStatus("Data lokal direset", "ok");
-}
 
+  if (typeof updateLatihan2Stats === "function") {
+    updateLatihan2Stats();
+  }
+
+  if (typeof updateLatihan3Stats === "function") {
+    updateLatihan3Stats();
+  }
+
+  showStatus("Status hafalan berhasil direset", "ok");
+}
 /* =========================
    Sheet picker modal
 ========================= */
